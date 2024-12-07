@@ -37,12 +37,12 @@ public class PlayerMovement : NetworkBehaviour
     private Animator anim;
     private Camera playerCamera;
 
-    private void Awake() 
+    private void Awake()
     {
         ObtainComponent();
     }
 
-    private void Start() 
+    private void Start()
     {
         Init();
 
@@ -165,10 +165,10 @@ public class PlayerMovement : NetworkBehaviour
     private void ObtainComponent() 
     {
 
-        playerCamera = Camera.main;
+        playerCamera = GetComponentInChildren<Camera>();
 
         characterController = GetComponent<CharacterController>();
         audioSource = GetComponent<AudioSource>();
-        anim = GetComponentInChildren<Animator>();
+        anim = GetComponent<Animator>();
     }
 }
