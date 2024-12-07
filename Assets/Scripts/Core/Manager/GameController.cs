@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     
     [SerializeField] private InputActionReference pauseAction;
+    
+    //DEBUG
+    private const string buildVer = "Pre alpha";
+    [SerializeField] private TMP_Text buildVerString;
 
     private void Awake()
     {
@@ -48,6 +53,9 @@ public class GameController : MonoBehaviour
         }
         
         Instance = this;
+        
+        // DEBUG
+        buildVerString.text = buildVer + " v. " + Application.version;
     }
 
     public void GoToPrevState()
@@ -78,6 +86,5 @@ public class GameController : MonoBehaviour
                 pauseMenu.SetActive(false);
                 break;
         }
-        
     }
 }
