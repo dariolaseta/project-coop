@@ -39,13 +39,11 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Awake() 
     {
-
         ObtainComponent();
     }
 
     private void Start() 
     {
-
         Init();
 
         BindInputActions();
@@ -58,13 +56,11 @@ public class PlayerMovement : NetworkBehaviour
 
     private void OnEnable() 
     {
-        
         EnableInputActions();
     }
 
     private void OnDisable() 
     {
-
         DisableInputActions();
     }
 
@@ -113,8 +109,10 @@ public class PlayerMovement : NetworkBehaviour
         runSpeed = isCrouching ? crouchSpeed : startRunningSpeed;
     }
 
-    private void MoveCharacter() 
+    private void MoveCharacter()
     {
+
+        if (!IsOwner) return;
 
         // Determina la velocit� di movimento e la direzione
         Vector3 desiredMoveDirection = transform.TransformDirection(new Vector3(moveDirection.x, 0, moveDirection.z));
@@ -140,8 +138,8 @@ public class PlayerMovement : NetworkBehaviour
         // Gestione dell'animazione
         isMoving = moveDirection.sqrMagnitude > 0.01f;
         
-        //anim.SetBool("isMoving", isMoving);
-        //anim.speed = isRunning ? 15f : 1f;
+        anim.SetBool("isMoving", isMoving);
+        anim.speed = isRunning ? 15f : 1f;
     }
 
     private void CheckForState()
