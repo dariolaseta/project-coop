@@ -67,6 +67,55 @@ public class PlayerMovement : NetworkBehaviour
         DisableInputActions();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsServer) return;
+        
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+    }
+
+    private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+    {
+        if (clientId == OwnerClientId && HasItems())
+        {
+            DestroyItems();
+        }
+    }
+
+    private void DestroyItems()
+    {
+        GameObject items = GameObject.Find("Items"); //TODO Cache
+
+        if (items)
+        {
+            foreach (Transform child in items.transform)
+            {
+                if (child.gameObject.activeSelf)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+        }
+    }
+
+    private bool HasItems()
+    {
+        GameObject items = GameObject.Find("Items");
+
+        if (items)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.activeInHierarchy)
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+
     private void BindInputActions() 
     {
 
