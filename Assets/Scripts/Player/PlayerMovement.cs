@@ -38,6 +38,7 @@ public class PlayerMovement : NetworkBehaviour
     private Animator anim;
     private Camera playerCamera;
     
+    private PlayerLogic playerLogic;
     private GameObject items;
 
     private void Awake()
@@ -202,9 +203,9 @@ public class PlayerMovement : NetworkBehaviour
 
     private void CheckForState()
     {
-        switch (GameController.Instance.State)
+        switch (playerLogic.PlayerState)
         {
-            case GameState.FreeRoam:
+            case PlayerState.Freeroam:
                 MoveCharacter();
                 break;
         }
@@ -212,7 +213,6 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Init() 
     {
-
         startWalkingSpeed = walkSpeed;
         startRunningSpeed = runSpeed;
 
@@ -222,9 +222,10 @@ public class PlayerMovement : NetworkBehaviour
 
     private void ObtainComponent() 
     {
-
+        playerLogic = GetComponent<PlayerLogic>();
+        
         playerCamera = GetComponentInChildren<Camera>();
-
+        
         characterController = GetComponent<CharacterController>();
         audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();

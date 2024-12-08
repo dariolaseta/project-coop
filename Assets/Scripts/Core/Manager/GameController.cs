@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public enum GameState {FreeRoam, Pause, Task, Inventory}
 public class GameController : MonoBehaviour
@@ -9,17 +12,9 @@ public class GameController : MonoBehaviour
     //TODO Refactor states to GameStates and PlayerStates
     public static GameController Instance { get; private set; }
     
-    private GameState state = GameState.FreeRoam;
-    private GameState prevState;
-    public GameState State => state;
-
-    [SerializeField] private GameObject pauseMenu;
-    
-    [SerializeField] private InputActionReference pauseAction;
-    
-    //DEBUG
-    private const string buildVer = "Pre alpha";
-    [SerializeField] private TMP_Text buildVerString;
+    private GameState gameState = GameState.FreeRoam;
+    private GameState prevGameState;
+    public GameState GameState => gameState;
 
     private void Awake()
     {
@@ -29,18 +24,6 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-    }
-
-    private void OnEnable()
-    {
-        pauseAction.action.Enable();
-        pauseAction.action.started += PauseGame;
-    }
-
-    private void OnDisable()
-    {
-        pauseAction.action.Disable();
-        pauseAction.action.started -= PauseGame;
     }
 
     private void Init()
@@ -53,38 +36,16 @@ public class GameController : MonoBehaviour
         }
         
         Instance = this;
-        
-        // DEBUG
-        //buildVerString.text = buildVer + " v. " + Application.version;
     }
 
-    public void GoToPrevState()
+    public void GoToPrevGameState()
     {
-        state = prevState;
+        gameState = prevGameState;
     }
 
-    public void ChangeState(GameState newState)
+    public void ChangeGameState(GameState newState)
     {
-        prevState = state;
-        state = newState;
-    }
-
-    public void PauseGame(InputAction.CallbackContext obj)
-    {
-        switch (state)
-        {
-            case GameState.FreeRoam:
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                ChangeState(GameState.Pause);
-                pauseMenu.SetActive(true);
-                break;
-            case GameState.Pause:
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                GoToPrevState();
-                pauseMenu.SetActive(false);
-                break;
-        }
+        prevGameState = gameState;
+        gameState = newState;
     }
 }

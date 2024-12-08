@@ -20,9 +20,6 @@ public class Interactor : MonoBehaviour
 
     private void Start() {
         
-        bigCursor = GameObject.FindGameObjectWithTag("BigCursor").GetComponent<Image>();
-        grabCursor = GameObject.FindGameObjectWithTag("GrabCursor").GetComponent<Image>();
-
         bigCursor.enabled = false;
         grabCursor.enabled = false;
     }
@@ -43,7 +40,7 @@ public class Interactor : MonoBehaviour
 
         if (Physics.Raycast(r, out RaycastHit hitInfo, InteractRange)) {
 
-            if (hitInfo.collider.gameObject.TryGetComponent(out IInteractable interactObj) && GameController.Instance.State == GameState.FreeRoam) {
+            if (hitInfo.collider.gameObject.TryGetComponent(out IInteractable interactObj) && GameController.Instance.GameState == GameState.FreeRoam) {
 
                 interactObj.Interact();
             }
