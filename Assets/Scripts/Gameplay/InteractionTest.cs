@@ -39,8 +39,12 @@ public class InteractionTest : NetworkBehaviour, IInteractable
         if (player)
         {
             string objectNameWithoutClone = objectName.Replace("(Clone)", "");
+
+            Transform itemHolder = player.transform.Find("Items");
             
-            Transform targetObject = player.transform.Find(objectNameWithoutClone);
+            if (!itemHolder) return;
+            
+            Transform targetObject = itemHolder.transform.Find(objectNameWithoutClone);
 
             if (targetObject)
             {

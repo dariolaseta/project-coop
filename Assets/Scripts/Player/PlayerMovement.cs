@@ -76,6 +76,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
     {
+        Debug.Log("AAAA");
         if (clientId == OwnerClientId && HasItems())
         {
             DestroyItems();
