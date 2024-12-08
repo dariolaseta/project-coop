@@ -9,7 +9,7 @@ public class ItemSpawner : NetworkBehaviour
     
     [SerializeField] private List<GameObject> spawnPoints = new List<GameObject>();
     [SerializeField] private List<GameObject> items = new List<GameObject>();
-
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -29,7 +29,7 @@ public class ItemSpawner : NetworkBehaviour
         }
     }
 
-
+    //TODO Implementare in un gameobject che viene eliminato se non è il server
     public void SpawnItems()
     {
         if (!IsServer) return;

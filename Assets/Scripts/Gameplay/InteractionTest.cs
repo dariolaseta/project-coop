@@ -3,23 +3,56 @@ using UnityEngine;
 
 public class InteractionTest : NetworkBehaviour, IInteractable
 {
+    [SerializeField] private ItemType itemType;
+    private enum ItemType
+    {
+        Obtainable,
+        Holding
+    };
+    
     public void Interact()
     {
-        Debug.Log($"Client {NetworkManager.LocalClientId} ha chiamato Interact");
-        DeactivateObjectServerRpc();
+        InteractOverNetworkServerRpc();
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void DeactivateObjectServerRpc(ServerRpcParams rpcParams = default)
+    private void InteractOverNetworkServerRpc(ServerRpcParams rpcParams = default)
     {
-        Debug.Log($"Server ha ricevuto la richiesta da client {rpcParams.Receive.SenderClientId}");
-        DeactivateObjectClientRpc();
+        var clientId = rpcParams.Receive.SenderClientId;
+        
+        switch (itemType)
+        {
+            case ItemType.Obtainable:
+                DeactivateObjectClientRpc();
+                break;
+            case ItemType.Holding:
+                MakeObjectVisibleClientRpc(gameObject.name, clientId);
+                break;
+        }
+    }
+
+    [ClientRpc]
+    private void MakeObjectVisibleClientRpc(string objectName, ulong clientId)
+    {
+        GameObject player = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.gameObject;
+
+        if (player)
+        {
+            string objectNameWithoutClone = objectName.Replace("(Clone)", "");
+            
+            Transform targetObject = player.transform.Find(objectNameWithoutClone);
+
+            if (targetObject)
+            {
+                targetObject.gameObject.SetActive(true);
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     [ClientRpc]
     private void DeactivateObjectClientRpc()
     {
-        Debug.Log($"Disattivazione su client {NetworkManager.LocalClientId}");
         gameObject.SetActive(false);
     }
 }

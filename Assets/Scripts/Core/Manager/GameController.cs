@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public enum GameState {FreeRoam, Pause, Task, Inventory}
 public class GameController : MonoBehaviour
 {
-    //TODO Implement debug with states
+    //TODO Refactor states to GameStates and PlayerStates
     public static GameController Instance { get; private set; }
     
     private GameState state = GameState.FreeRoam;
