@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,6 +38,8 @@ public class PlayerMovement : NetworkBehaviour
     private Animator anim;
     private Camera playerCamera;
     
+    private GameObject items;
+    
     //DEBUG
     [SerializeField] private InputActionReference spawnItemAction;
 
@@ -57,52 +60,56 @@ public class PlayerMovement : NetworkBehaviour
         CheckForState();
     }
 
-    private void OnEnable() 
-    {
-        EnableInputActions();
-    }
-
     private void OnDisable() 
     {
-        DisableInputActions();
+        if (IsOwner)
+        {
+            DisableInputActions();
+        }
     }
 
     public override void OnNetworkSpawn()
     {
-        if (!IsServer) return;
-        
-        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        items = transform.Find("Items")?.gameObject;
+
+        if (IsOwner)
+        {
+            EnableInputActions();
+        }
+
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+        }
     }
 
     private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
     {
-        Debug.Log("AAAA");
-        if (clientId == OwnerClientId && HasItems())
-        {
-            DestroyItems();
-        }
+        //TODO FIX
+        //if (clientId == OwnerClientId && HasItems())
+        //{
+        //    MultiplayerManager.Instance.DestroyItem(GetActiveItemName());
+        //}
     }
 
-    private void DestroyItems()
+    private string GetActiveItemName()
     {
-        GameObject items = GameObject.Find("Items"); //TODO Cache
-
         if (items)
         {
             foreach (Transform child in items.transform)
             {
-                if (child.gameObject.activeSelf)
+                if (child.gameObject.activeInHierarchy)
                 {
-                    Destroy(child.gameObject);
+                    return child.name;
                 }
             }
         }
+        
+        return null;
     }
 
     private bool HasItems()
     {
-        GameObject items = GameObject.Find("Items");
-
         if (items)
         {
             foreach (Transform child in transform)
@@ -149,6 +156,7 @@ public class PlayerMovement : NetworkBehaviour
 
     private void DisableInputActions() 
     {
+        
         moveAction.action.Disable();
         lookAction.action.Disable();
         runAction.action.Disable();
