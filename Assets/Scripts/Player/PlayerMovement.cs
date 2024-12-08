@@ -36,6 +36,9 @@ public class PlayerMovement : NetworkBehaviour
     private CharacterController characterController;
     private Animator anim;
     private Camera playerCamera;
+    
+    //DEBUG
+    [SerializeField] private InputActionReference spawnItemAction;
 
     private void Awake()
     {
@@ -77,6 +80,13 @@ public class PlayerMovement : NetworkBehaviour
         runAction.action.canceled += ctx => isRunning = false;
 
         crouchAction.action.performed += ctx => ToggleCrouch();
+
+        spawnItemAction.action.started += SpawnItem;
+    }
+
+    private void SpawnItem(InputAction.CallbackContext obj)
+    {
+        ItemSpawner.Instance.SpawnItems();
     }
 
     private void EnableInputActions() 
@@ -98,6 +108,8 @@ public class PlayerMovement : NetworkBehaviour
         lookAction.action.started -= ctx => lookInput = Vector2.zero;
         runAction.action.started -= ctx => isRunning = false;
         crouchAction.action.started -= ctx => isCrouching = false;
+        
+        spawnItemAction.action.started -= SpawnItem;
     }
 
     private void ToggleCrouch() 
