@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
         Instance = this;
         
         // DEBUG
-        buildVerString.text = buildVer + " v. " + Application.version;
+        //buildVerString.text = buildVer + " v. " + Application.version;
     }
 
     public void GoToPrevState()

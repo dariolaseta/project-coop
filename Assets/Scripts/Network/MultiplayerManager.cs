@@ -17,44 +17,13 @@ public class MultiplayerManager : NetworkBehaviour
         Instance = this;
     }
 
-    public void DestroyItem(string itemName)
+    public void StartHost()
     {
-        NetworkObjectReference itemRef = FindNetworkObjectByName(itemName);
-        
-        DestroyItemServerRpc(itemRef);
+        NetworkManager.Singleton.StartHost();
     }
 
-    private NetworkObjectReference FindNetworkObjectByName(string itemName)
+    public void StartClient()
     {
-        foreach (var networkObject in NetworkManager.Singleton.SpawnManager.SpawnedObjects)
-        {
-            if (networkObject.Value != null && networkObject.Value.gameObject.name == itemName)
-            {
-                return new NetworkObjectReference(networkObject.Value);
-            }
-        }
-        return default;
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void DestroyItemServerRpc(NetworkObjectReference itemRef)
-    {
-        itemRef.TryGet(out NetworkObject itemObject);
-
-        if (itemObject == null) return;
-        
-        
-        // Call ClientRpc to hide the item on the client side
-        ClearItemOnParentClientRpc(itemRef);
-    }
-
-    [ClientRpc]
-    private void ClearItemOnParentClientRpc(NetworkObjectReference itemRef)
-    {
-        itemRef.TryGet(out NetworkObject itemObject);
-        GameObject item = itemObject.gameObject;
-        
-        // Deactivate the GameObject on the client side
-        item.SetActive(false);
+        NetworkManager.Singleton.StartClient();
     }
 }

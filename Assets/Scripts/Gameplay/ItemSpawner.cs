@@ -21,13 +21,13 @@ public class ItemSpawner : NetworkBehaviour
         Instance = this;
     }
 
-    public override void OnNetworkSpawn()
-    {
-        if (IsServer)
-        {
-            SpawnItems();
-        }
-    }
+    // public override void OnNetworkSpawn()
+    // {
+    //     if (IsServer)
+    //     {
+    //         SpawnItems();
+    //     }
+    // }
 
     public void SpawnItems()
     {

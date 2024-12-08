@@ -9,11 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/LoadMainMenu.unity
     guid: 1a311ac133059014cb67f1d4ec8c27eb
   - enabled: 1
+    path: Assets/Scenes/LobbyScene.unity
+    guid: 77cebc96c303b26478c778f77cd63f0a
+  - enabled: 1
     path: Assets/Scenes/TestScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: e3532b4b4ffdf3b45b5d41858f4a84c1
+  - enabled: 1
+    path: Assets/Scenes/CharacterSelectScreen.unity
+    guid: 878ad4dd3f3db7543beb6027f9e69d5c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
