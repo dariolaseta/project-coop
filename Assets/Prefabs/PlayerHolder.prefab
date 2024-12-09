@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5782095541036165638}
   - component: {fileID: 8997946049983465855}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -724,6 +724,7 @@ GameObject:
   - component: {fileID: 3136538483273536089}
   - component: {fileID: 4313668677508989955}
   - component: {fileID: 5451788656866965273}
+  - component: {fileID: 3719278675833496420}
   - component: {fileID: 6236540324448358325}
   - component: {fileID: 2592786027449314651}
   - component: {fileID: 2358353557059239470}
@@ -804,6 +805,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3719278675833496420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5931734965283660271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7d946debd63b04dbb98a16debd1178, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headMeshRenderer: {fileID: 5782095541036165638}
+  bodyMeshRenderer: {fileID: 3882766788495549736}
 --- !u!114 &6236540324448358325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,6 +869,7 @@ MonoBehaviour:
   runAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   crouchAction: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   footstepSound: {fileID: 0}
+  playerVisual: {fileID: 3719278675833496420}
 --- !u!114 &2358353557059239470
 MonoBehaviour:
   m_ObjectHideFlags: 0

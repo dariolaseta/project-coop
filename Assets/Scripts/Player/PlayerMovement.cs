@@ -20,7 +20,9 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private InputActionReference crouchAction;
     
     [SerializeField] private AudioClip footstepSound;
-
+    
+    [SerializeField] private PlayerVisual playerVisual;
+    
     private const float Gravity = 10f;
     private float rotationX = 0;
     private float startWalkingSpeed;
@@ -218,6 +220,9 @@ public class PlayerMovement : NetworkBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
+        PlayerData playerData = MultiplayerManager.Instance.GetPlayerDataFromClientId(OwnerClientId);
+        playerVisual.SetPlayerColor(MultiplayerManager.Instance.GetPlayerColor(playerData.colorId));
     }
 
     private void ObtainComponent() 
