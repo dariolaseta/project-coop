@@ -17,6 +17,13 @@ public class Interactor : MonoBehaviour
     [SerializeField] private Image grabCursor;
 
     [SerializeField] InputActionReference interactAction;
+    
+    private PlayerLogic playerLogic;
+
+    private void Awake()
+    {
+        playerLogic = GetComponent<PlayerLogic>();
+    }
 
     private void Start() {
         
@@ -40,7 +47,7 @@ public class Interactor : MonoBehaviour
 
         if (Physics.Raycast(r, out RaycastHit hitInfo, InteractRange)) {
 
-            if (hitInfo.collider.gameObject.TryGetComponent(out IInteractable interactObj) && GameController.Instance.GameState == GameState.FreeRoam) {
+            if (hitInfo.collider.gameObject.TryGetComponent(out IInteractable interactObj) && playerLogic.PlayerState == PlayerState.Freeroam) {
 
                 interactObj.Interact();
             }
