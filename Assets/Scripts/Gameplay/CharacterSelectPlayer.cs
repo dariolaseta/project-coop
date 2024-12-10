@@ -73,6 +73,8 @@ public class CharacterSelectPlayer : MonoBehaviour
     {
         PlayerData playerData = MultiplayerManager.Instance.GetPlayerDataFromIndex(playerIndex);
         
+        GameLobby.Instance.KickPlayer(playerData.playerId.ToString());
+        
         MultiplayerManager.Instance.KickPlayer(playerData.clientId);
         
         //TODO Send player to main menu with reason
