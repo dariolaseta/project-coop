@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,8 @@ public class CharacterSelectPlayer : MonoBehaviour
     [SerializeField] private PlayerVisual playerVisual;
 
     [SerializeField] private Button kickButton;
+    
+    [SerializeField] private TMP_Text playerNameText;
 
     private void Awake()
     {
@@ -45,6 +48,8 @@ public class CharacterSelectPlayer : MonoBehaviour
 
             PlayerData playerData = MultiplayerManager.Instance.GetPlayerDataFromIndex(playerIndex);
             readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+
+            playerNameText.text = playerData.playerName.ToString();
             
             playerVisual.SetPlayerColor(MultiplayerManager.Instance.GetPlayerColor(playerData.colorId));
         }
