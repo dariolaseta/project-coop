@@ -1,42 +1,33 @@
 using System;
-using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyUI : MonoBehaviour
 {
-    [SerializeField] private Button createGameButton;
-    [SerializeField] private Button joinGameButton;
-    
-    [SerializeField] private TMP_InputField playerNameInputField;
-    
-    [SerializeField] private string sceneToLoad;
+    [SerializeField] private Button mainMenuButton;
+    [SerializeField] private Button createLobbyButton;
+    [SerializeField] private Button quickJoinButton;
 
     private void Awake()
     {
-        createGameButton.onClick.AddListener(CreateGame);
-        joinGameButton.onClick.AddListener(JoinGame);
+        mainMenuButton.onClick.AddListener(BackToMainMenu);
+        createLobbyButton.onClick.AddListener(CreateLobby);
+        quickJoinButton.onClick.AddListener(QuickJoin);
     }
 
-    private void Start()
+    private void CreateLobby()
     {
-        playerNameInputField.text = MultiplayerManager.Instance.GetPlayerName();
-        playerNameInputField.onValueChanged.AddListener((string newText) =>
-        {
-            MultiplayerManager.Instance.SetPlayerName(newText);
-        });
+        GameLobby.Instance.CreateLobby("LobbyName", false);
     }
 
-    private void CreateGame()
+    private void QuickJoin()
     {
-        MultiplayerManager.Instance.StartHost();
-        NetworkManager.Singleton.SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single);
+        GameLobby.Instance.QuickJoin();
     }
 
-    private void JoinGame()
+    private void BackToMainMenu()
     {
-        MultiplayerManager.Instance.StartClient();
+        SceneManager.LoadScene("MainMenu");
     }
 }

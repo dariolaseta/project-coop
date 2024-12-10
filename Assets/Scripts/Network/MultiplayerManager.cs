@@ -9,7 +9,7 @@ public class MultiplayerManager : NetworkBehaviour
 {
     public static MultiplayerManager Instance { get; private set; }
 
-    private const int MAX_PLAYER_AMOUNT = 8;
+    public const int MAX_PLAYER_AMOUNT = 8;
     private const string PLAYER_PREFS_PLAYER_NAME = "PlayerName";
 
     public event EventHandler OnTryingToJoinGame;
