@@ -47,7 +47,7 @@ public class Interactor : MonoBehaviour
 
         if (Physics.Raycast(r, out RaycastHit hitInfo, InteractRange)) {
 
-            if (hitInfo.collider.gameObject.TryGetComponent(out IInteractable interactObj) && playerLogic.PlayerState == PlayerState.Freeroam) {
+            if (hitInfo.collider.gameObject.TryGetComponent(out IInteractable interactObj) && playerLogic.CanMove()) {
 
                 interactObj.Interact();
             }

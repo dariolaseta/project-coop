@@ -183,7 +183,7 @@ public class PlayerMovement : NetworkBehaviour
     private void MoveCharacter()
     {
 
-        if (!IsOwner) return;
+        if (!IsOwner && !playerLogic.CanMove()) return;
 
         // Determina la velocit� di movimento e la direzione
         Vector3 desiredMoveDirection = transform.TransformDirection(new Vector3(moveDirection.x, 0, moveDirection.z));

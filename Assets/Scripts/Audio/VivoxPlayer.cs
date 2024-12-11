@@ -53,7 +53,7 @@ public class VivoxPlayer : NetworkBehaviour
             lastPlayerHeadPos = localPlayerHead.position;
         }
     }
-
+    // TODO: LOG OUT QUANDO SI TORNA AL MENU PRINCIPALE
     private void OnDestroy()
     {
         if (IsLocalPlayer)
@@ -85,9 +85,21 @@ public class VivoxPlayer : NetworkBehaviour
         isIn3DChannel = true;
         
         Debug.Log("Vivox: Successfully joined vivox 3d channel");
+        NotifyPlayerReady();
     }
 
-    private void OnUserLoggedOut()
+    private void NotifyPlayerReady()
+    {
+        NotifyPlayerReadyServerRpc();
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    private void NotifyPlayerReadyServerRpc()
+    {
+        GameManager.Instance.PlayerReady();
+    }
+
+    public void OnUserLoggedOut()
     {
         isIn3DChannel = false;
 
@@ -108,7 +120,5 @@ public class VivoxPlayer : NetworkBehaviour
         
         audioSettings.PopulateInputDeviceList();
         audioSettings.PopulateOutputDeviceList();
-        
-        Debug.Log("Vivox: Client " + clientId + " logged in");
     }
 }

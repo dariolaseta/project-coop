@@ -54,6 +54,8 @@ public class PlayerLogic : NetworkBehaviour
     
     public void PauseGame(InputAction.CallbackContext obj)
     {
+        if (!CanMove()) return;
+        
         switch (playerState)
         {
             case PlayerState.Freeroam:
@@ -69,5 +71,11 @@ public class PlayerLogic : NetworkBehaviour
                 pauseMenu.SetActive(false);
                 break;
         }
+    }
+
+    public bool CanMove()
+    {
+        return playerState == PlayerState.Freeroam &&
+               GameManager.Instance.CurrentGameState.Value == GameManager.GameState.Playing;
     }
 }

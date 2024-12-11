@@ -15,6 +15,8 @@ public class PauseMenuUI : MonoBehaviour
     
     [SerializeField] private PlayerLogic playerLogic;
     
+    [SerializeField] private VivoxPlayer vivoxPlayer;
+    
     private void Awake()
     {
         resumeButton.onClick.AddListener(Resume);
@@ -40,6 +42,7 @@ public class PauseMenuUI : MonoBehaviour
     private void QuitToMainMenu()
     {
         NetworkManager.Singleton.Shutdown();
+        vivoxPlayer.OnUserLoggedOut();
         SceneManager.LoadScene("MainMenu");
     }
 }

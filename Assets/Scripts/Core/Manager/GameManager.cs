@@ -9,6 +9,18 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance { get; private set; }
     
     [SerializeField] private Transform playerPrefab;
+    
+    private NetworkVariable<int> playersReady = new NetworkVariable<int>();
+
+    public enum GameState
+    {
+        Loading,
+        Playing,
+        GameOver
+    }
+    
+    private NetworkVariable<GameState> currentGameState = new NetworkVariable<GameState>(GameState.Loading);
+    public NetworkVariable<GameState> CurrentGameState => currentGameState;
 
     private void Awake()
     {
@@ -19,6 +31,35 @@ public class GameManager : NetworkBehaviour
         }
         
         Instance = this;
+    }
+
+    public void PlayerReady()
+    {
+        playersReady.Value++;
+        
+        Debug.Log("ready plaers: " + playersReady.Value);
+        
+        Debug.Log($"Players Ready: {playersReady.Value} Players Connnected: {NetworkManager.Singleton.ConnectedClients.Count}");
+
+        if (playersReady.Value == NetworkManager.Singleton.ConnectedClients.Count && IsServer)
+        {
+            StartGame();
+        }
+    }
+
+    private void StartGame()
+    {
+        NotifyAllPlayersReadyClientRpc();
+    }
+    
+    [ClientRpc]
+    private void NotifyAllPlayersReadyClientRpc()
+    {
+        Debug.Log("GameManager: All players are ready, starting the game!");
+        
+        currentGameState.Value = GameState.Playing;
+
+        UIManager.Instance.HideLoadingScreen();
     }
 
     public override void OnNetworkSpawn()
