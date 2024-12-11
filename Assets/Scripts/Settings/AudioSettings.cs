@@ -17,12 +17,6 @@ public class AudioSettings : MonoBehaviour
     private const string INPUT_DEVICE_KEY = "SelectedInputDevice";
     private const string OUTPUT_DEVICE_KEY = "SelectedOutputDevice";
 
-    private void Start()
-    {
-        PopulateInputDeviceList();
-        PopulateOutputDeviceList();
-    }
-
     public void PopulateInputDeviceList()
     {
         inputDeviceDropdown.ClearOptions();

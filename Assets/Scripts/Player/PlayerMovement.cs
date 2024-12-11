@@ -127,7 +127,17 @@ public class PlayerMovement : NetworkBehaviour
     private void BindInputActions() 
     {
 
-        moveAction.action.performed += ctx => moveDirection = ctx.ReadValue<Vector3>();
+        moveAction.action.performed += ctx =>
+        {
+            if (ctx.control.device is Gamepad)
+            {
+                moveDirection = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
+            }
+            else
+            {
+                moveDirection = ctx.ReadValue<Vector3>();
+            }
+        };
         moveAction.action.canceled += ctx => moveDirection = Vector3.zero;
 
         lookAction.action.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
