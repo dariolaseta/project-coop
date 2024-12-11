@@ -11,6 +11,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
+using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using LobbyServiceException = Unity.Services.Lobbies.LobbyServiceException;
@@ -64,6 +65,8 @@ public class GameLobby : MonoBehaviour
             await UnityServices.InitializeAsync(initializationOptions);
 
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+            await VivoxService.Instance.InitializeAsync();
         }
     }
 

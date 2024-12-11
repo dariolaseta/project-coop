@@ -2,6 +2,7 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PauseMenuUI : MonoBehaviour
@@ -9,7 +10,9 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button optionsButton;
     [SerializeField] private Button quitToMainMenuButton;
-
+    
+    [SerializeField] private GameObject settingsMenu;
+    
     [SerializeField] private PlayerLogic playerLogic;
     
     private void Awake()
@@ -30,7 +33,8 @@ public class PauseMenuUI : MonoBehaviour
 
     private void Options()
     {
-        
+        settingsMenu.SetActive(true);
+        gameObject.SetActive(false);
     }
 
     private void QuitToMainMenu()
