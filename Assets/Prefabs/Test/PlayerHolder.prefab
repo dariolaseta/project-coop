@@ -6672,7 +6672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e1a7749f63dc44d9199e8fc93beb10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InteractRange: 7
+  ShowTopMostFoldoutHeaderGroup: 1
+  InteractRange: 2
   InteractorSource: {fileID: 183437916710843975}
   bigCursor: {fileID: 7716781309726354331}
   grabCursor: {fileID: 164009087697991374}
