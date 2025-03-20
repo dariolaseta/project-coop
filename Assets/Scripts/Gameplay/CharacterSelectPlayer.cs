@@ -26,7 +26,6 @@ public class CharacterSelectPlayer : MonoBehaviour
         MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += MultiplayerManager_OnPlayerDataNetworkListChanged;
         CharacterSelectReady.Instance.OnReadyChanged += CharacterSelectReady_OnReadyChanged;
         
-        kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
         UpdatePlayer();
     }
 
@@ -52,6 +51,11 @@ public class CharacterSelectPlayer : MonoBehaviour
             playerNameText.text = playerData.playerName.ToString();
             
             playerVisual.SetPlayerColor(MultiplayerManager.Instance.GetPlayerColor(playerData.colorId));
+            
+            bool isServer = NetworkManager.Singleton.IsServer;
+            ulong localClientId = NetworkManager.Singleton.LocalClientId;
+            bool isLocalPlayer = playerData.clientId == localClientId;
+            kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
         }
         else
         {
