@@ -37,7 +37,7 @@ public class GameManager : NetworkBehaviour
     {
         playersReady.Value++;
         
-        Debug.Log("ready plaers: " + playersReady.Value);
+        Debug.Log("ready players: " + playersReady.Value);
         
         Debug.Log($"Players Ready: {playersReady.Value} Players Connnected: {NetworkManager.Singleton.ConnectedClients.Count}");
 

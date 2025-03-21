@@ -63,6 +63,8 @@ public class InteractionTest : NetworkBehaviour, IInteractable
             if (targetObject)
             {
                 targetObject.gameObject.SetActive(true);
+                targetObject.GetComponent<Rigidbody>().isKinematic = true;
+                
                 gameObject.SetActive(false);
             }
         }

@@ -39,6 +39,44 @@ public class CharacterSelectReady : NetworkBehaviour
         SetPlayerReadyClientRpc(serverRpcParams.Receive.SenderClientId);
         playerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;
         
+        bool allReady = true;
+        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            if (!playerReadyDictionary.ContainsKey(clientId) || !playerReadyDictionary[clientId])
+            {
+                allReady = false;
+                break;
+            }
+        }
+
+        if (allReady)
+        {
+            ClientRpcParams hostRpcParams = new ClientRpcParams
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new ulong[] { 0 }
+                }
+            };
+            ShowStartPromptClientRpc(hostRpcParams);
+        }
+    }
+    
+    [ClientRpc]
+    private void ShowStartPromptClientRpc(ClientRpcParams clientRpcParams = default)
+    {
+        if (NetworkManager.Singleton.ConnectedClientsIds.Count == 1)
+        {
+            UIManager.Instance.ShowWarning("Sei solo nella stanza, continuare?", StartGame);
+        }
+        else
+        {
+            UIManager.Instance.ShowWarning("Tutti i giocatori sono pronti! Iniziare la partita?", StartGame);
+        }
+    }
+
+    private void StartGame()
+    {
         bool allClientsReady = true;
 
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) 
@@ -54,6 +92,31 @@ public class CharacterSelectReady : NetworkBehaviour
         {
             NetworkManager.Singleton.SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single);
         }
+    }
+    
+    public void UnreadyHost()
+    {
+        UnreadyHostServerRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void UnreadyHostServerRpc(ServerRpcParams serverRpcParams = default)
+    {
+        ulong senderId = serverRpcParams.Receive.SenderClientId;
+        
+        // Solo l'host può rimuovere il proprio stato "pronto"
+        if (senderId == 0 && playerReadyDictionary.ContainsKey(senderId))
+        {
+            playerReadyDictionary[senderId] = false;
+            SetPlayerUnreadyClientRpc(senderId);
+        }
+    }
+    
+    [ClientRpc]
+    private void SetPlayerUnreadyClientRpc(ulong clientId)
+    {
+        playerReadyDictionary[clientId] = false;
+        OnReadyChanged?.Invoke(this, EventArgs.Empty);
     }
     
     [ClientRpc]

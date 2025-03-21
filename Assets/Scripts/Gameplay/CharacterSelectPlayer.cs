@@ -80,8 +80,6 @@ public class CharacterSelectPlayer : MonoBehaviour
         GameLobby.Instance.KickPlayer(playerData.playerId.ToString());
         
         MultiplayerManager.Instance.KickPlayer(playerData.clientId);
-        
-        //TODO Send player to main menu with reason
     }
 
     private void OnDestroy()

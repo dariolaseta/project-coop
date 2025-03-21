@@ -1,6 +1,8 @@
 using System;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,9 +13,14 @@ public class UIManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject disconnectUI;
+    [SerializeField] private GameObject warningUI;
     
     [SerializeField] private Button returnToMainMenuButton;
     [SerializeField] private Button readyButton;
+    [SerializeField] private Button warningContinueButton;
+    [SerializeField] private Button warningCancelButton;
+    
+    [SerializeField] private TMP_Text warningText;
 
     private bool isIntentionalDisconnect = false;
     
@@ -29,6 +36,9 @@ public class UIManager : MonoBehaviour
         Instance = this;
         
         returnToMainMenuButton.onClick.AddListener(ReturnToMainMenu);
+        
+        if (warningCancelButton)
+            warningCancelButton.onClick.AddListener(CancelButtonClick);
     }
 
     private void Start()
@@ -39,6 +49,9 @@ public class UIManager : MonoBehaviour
         }
         
         disconnectUI.SetActive(false);
+        
+        if (warningUI)
+            warningUI.SetActive(false);
     }
 
     private void OnDestroy()
@@ -54,7 +67,12 @@ public class UIManager : MonoBehaviour
         if (clientId == NetworkManager.Singleton.LocalClientId && !isIntentionalDisconnect)
         {
             disconnectUI.SetActive(true);
-            readyButton.gameObject.SetActive(false);
+            
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
+            if (readyButton)
+                readyButton.gameObject.SetActive(false);
         }
     }
 
@@ -70,8 +88,23 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    private void CancelButtonClick()
+    {
+        CharacterSelectReady.Instance.UnreadyHost();
+        warningUI.SetActive(false);
+    }
+
     public void HideLoadingScreen()
     {
         loadingScreen.SetActive(false);
+    }
+
+    public void ShowWarning(string message, UnityAction continueAction)
+    {
+        warningUI.SetActive(true);
+        
+        warningText.text = message;
+        
+        warningContinueButton.onClick.AddListener(continueAction);
     }
 }
