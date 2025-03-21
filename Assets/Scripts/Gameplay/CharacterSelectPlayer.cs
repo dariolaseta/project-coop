@@ -15,6 +15,10 @@ public class CharacterSelectPlayer : MonoBehaviour
     [SerializeField] private Button kickButton;
     
     [SerializeField] private TMP_Text playerNameText;
+    [SerializeField] private TMP_Text playerPingText;
+
+    private float pingUpdateTimer = 0f;
+    private const float PING_UPDATE_INTERVAL = 1f;
 
     private void Awake()
     {
@@ -27,6 +31,44 @@ public class CharacterSelectPlayer : MonoBehaviour
         CharacterSelectReady.Instance.OnReadyChanged += CharacterSelectReady_OnReadyChanged;
         
         UpdatePlayer();
+    }
+
+    private void Update()
+    {
+        pingUpdateTimer += Time.deltaTime;
+        if (pingUpdateTimer >= PING_UPDATE_INTERVAL)
+        {
+            pingUpdateTimer = 0f;
+
+            if (MultiplayerManager.Instance.IsPlayerIndexConnected(playerIndex))
+            {
+                PlayerData playerData = MultiplayerManager.Instance.GetPlayerDataFromIndex(playerIndex);
+                UpdatePingDisplay(playerData.clientId);
+            }
+        }
+    }
+    
+    private void UpdatePingDisplay(ulong clientId)
+    {
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.NetworkConfig != null)
+        {
+            try
+            {
+                var transport = NetworkManager.Singleton.NetworkConfig.NetworkTransport;
+                if (transport != null)
+                {
+                    int ping = (int)transport.GetCurrentRtt(clientId);
+                    playerPingText.text = $"{ping} ms";
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error getting ping: {e.Message}");
+            }
+        }
+    
+        playerPingText.text = "N/A";
     }
 
     private void CharacterSelectReady_OnReadyChanged(object sender, EventArgs e)
@@ -51,6 +93,8 @@ public class CharacterSelectPlayer : MonoBehaviour
             playerNameText.text = playerData.playerName.ToString();
             
             playerVisual.SetPlayerColor(MultiplayerManager.Instance.GetPlayerColor(playerData.colorId));
+            
+            UpdatePingDisplay(playerData.clientId);
             
             bool isServer = NetworkManager.Singleton.IsServer;
             ulong localClientId = NetworkManager.Singleton.LocalClientId;
