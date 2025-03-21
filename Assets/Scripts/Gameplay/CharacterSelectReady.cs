@@ -32,6 +32,14 @@ public class CharacterSelectReady : NetworkBehaviour
     {
         SetPlayerReadyServerRpc();
     }
+
+    public void ForceStartGame()
+    {
+        UIManager.Instance.ShowWarning("Forzare l'inizio della partita?", () =>
+        {
+            NetworkManager.Singleton.SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single);
+        });
+    }
     
     [ServerRpc(RequireOwnership = false)]
     private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default)
