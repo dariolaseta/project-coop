@@ -8,6 +8,8 @@ public class My_Debug : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Button clearPlayerPrefsButton;
+
+    [SerializeField] private GameObject debugUI;
     
     [SerializeField] private InputActionReference showDebugButtonAction;
     
@@ -23,7 +25,7 @@ public class My_Debug : MonoBehaviour
     {
         isDebugButtonActive = !isDebugButtonActive;
         
-        clearPlayerPrefsButton.gameObject.SetActive(isDebugButtonActive);
+        debugUI.SetActive(isDebugButtonActive);
     }
 
     private void OnDestroy()
@@ -36,7 +38,7 @@ public class My_Debug : MonoBehaviour
     {
         clearPlayerPrefsButton.onClick.AddListener(DeleteAllPlayerPrefs);
         
-        clearPlayerPrefsButton.gameObject.SetActive(false);
+        debugUI.SetActive(false);
     }
 
     private void DeleteAllPlayerPrefs()
