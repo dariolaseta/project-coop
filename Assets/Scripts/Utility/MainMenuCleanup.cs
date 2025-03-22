@@ -20,5 +20,10 @@ public class MainMenuCleanup : MonoBehaviour
         {
             Destroy(GameLobby.Instance.gameObject);
         }
+
+        if (NetworkLogger.Instance != null)
+        {
+            Destroy(NetworkLogger.Instance.gameObject);
+        }
     }
 }

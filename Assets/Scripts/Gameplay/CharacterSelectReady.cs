@@ -37,6 +37,8 @@ public class CharacterSelectReady : NetworkBehaviour
     {
         UIManager.Instance.ShowWarning("Forzare l'inizio della partita?", () =>
         {
+            NetworkLogger.Instance.LogNetworkEvent("Forzato l'inizio della partita.");
+            
             NetworkManager.Singleton.SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single);
         });
     }
@@ -98,6 +100,8 @@ public class CharacterSelectReady : NetworkBehaviour
 
         if (allClientsReady)
         {
+            NetworkLogger.Instance.LogNetworkEvent("Avviata la partita.");
+            
             NetworkManager.Singleton.SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single);
         }
     }

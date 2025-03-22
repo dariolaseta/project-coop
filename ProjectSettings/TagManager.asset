@@ -8,6 +8,7 @@ TagManager:
   - GrabCursor
   - BigCursor
   - Pickup
+  - NetworkLogger
   layers:
   - Default
   - TransparentFX
