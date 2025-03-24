@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using Unity.Netcode;
+using Unity.Services.Vivox;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -59,10 +60,22 @@ public class PauseMenuUI : MonoBehaviour
             volumeSlider = entity.GetComponentInChildren<Slider>();
             volumeSlider.gameObject.SetActive(!IsLocalPlayer(player.clientId));
             volumeSlider.interactable = !player.isMuted;
+            volumeSlider.onValueChanged.AddListener((float value) => AdjustPlayerVoiceChatVolume(player.playerName.ToString(), value));
             
             muteButton = entity.GetComponentInChildren<Button>();
-            muteButton.onClick.AddListener(() => ToggleMutePlayer(player.clientId));
             muteButton.gameObject.SetActive(!IsLocalPlayer(player.clientId));
+            muteButton.onClick.AddListener(() => ToggleMutePlayer(player.playerName.ToString()));
+        }
+    }
+
+    private void AdjustPlayerVoiceChatVolume(string displayName, float value)
+    {
+        VivoxParticipant participant = vivoxPlayer.GetParticipant(displayName);
+
+        if (participant != null)
+        {
+            int targetVolume = Mathf.RoundToInt(value);
+            vivoxPlayer.SetPlayerVolume(participant,  targetVolume);
         }
     }
 
@@ -71,10 +84,16 @@ public class PauseMenuUI : MonoBehaviour
         return clientId == NetworkManager.Singleton.LocalClientId;
     }
 
-    private void ToggleMutePlayer(ulong playerClientId)
+    private void ToggleMutePlayer(string displayName)
     {
-        // TODO: Add muting & volume manager system
-        Debug.Log($"Muting player with ID: {playerClientId}");
+        VivoxParticipant participant = vivoxPlayer.GetParticipant(displayName);
+
+        if (participant != null)
+        {
+            bool isMuted = participant.IsMuted;
+            
+            vivoxPlayer.SetMuteState(participant, !isMuted);
+        }
     }
 
     private void ClearList()

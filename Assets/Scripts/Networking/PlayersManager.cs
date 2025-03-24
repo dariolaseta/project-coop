@@ -72,8 +72,7 @@ public class PlayersManager : NetworkBehaviour
         {
             clientId = clientId,
             playerName = playerName,
-            colorId = (int)clientId % 4,
-            //isMuted = false TODO: Aggiungere questo e settare bene colore e playerName
+            isMuted = false
         });
     }
 

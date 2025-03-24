@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Unity.Netcode;
 using Unity.Services.Vivox;
 using UnityEngine;
@@ -20,6 +22,28 @@ public class VivoxPlayer : NetworkBehaviour
 
     private int clientId;
     
+    private Dictionary<string, VivoxParticipant> participants = new Dictionary<string, VivoxParticipant>();
+
+    private void Awake()
+    {
+        VivoxService.Instance.ParticipantAddedToChannel += OnParticipantAddedToChannel;
+    }
+
+    private void OnParticipantAddedToChannel(VivoxParticipant participant)
+    {
+        Debug.Log("Channel name " + participant.ChannelName);
+        Debug.Log("Display name " + participant.DisplayName);
+        
+        if (!participants.ContainsKey(participant.DisplayName))
+        {
+            participants.Add(participant.DisplayName, participant);
+        }
+        else
+        {
+            participants[participant.DisplayName] = participant;
+        }
+    }
+
     private void Start()
     {
         if (IsLocalPlayer)
@@ -69,8 +93,10 @@ public class VivoxPlayer : NetworkBehaviour
         {
             clientId = (int)NetworkManager.Singleton.LocalClientId;
             
+            string playerName = PlayerPrefs.GetString("PlayerName");
+            
             LoginOptions loginOptions = new LoginOptions();
-            loginOptions.DisplayName = "Client" + clientId;
+            loginOptions.DisplayName = playerName;
             loginOptions.EnableTTS = false;
             
             await VivoxService.Instance.LoginAsync(loginOptions);
@@ -120,5 +146,28 @@ public class VivoxPlayer : NetworkBehaviour
         
         audioSettings.PopulateInputDeviceList();
         audioSettings.PopulateOutputDeviceList();
+    }
+
+    public void SetPlayerVolume(VivoxParticipant participant, int volume)
+    {
+        participant.SetLocalVolume(volume);
+    }
+
+    public void SetMuteState(VivoxParticipant participant, bool isMuted)
+    {
+        if (isMuted)
+            participant.MutePlayerLocally();
+        else
+            participant.UnmutePlayerLocally();
+    }
+
+    public VivoxParticipant GetParticipant(string displayName)
+    {
+        if (participants.TryGetValue(displayName, out VivoxParticipant participant))
+        {
+            return participant;
+        }
+
+        return null;
     }
 }
