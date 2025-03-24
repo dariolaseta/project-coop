@@ -24,8 +24,8 @@ public class WeaponSystem : MonoBehaviour
 
     private int currentAmmo = 0;
     private int magazineSize = 0;
+    private int totalAmmo = 30;
     private int maxAmmo = 0;
-    private int totalAmmo = 0;
     
     private bool isReloading = false;
 
@@ -42,6 +42,8 @@ public class WeaponSystem : MonoBehaviour
         magazineSize = weapon.MagazineSize;
         fireRange = weapon.Range;
         reloadTime = weapon.ReloadTime;
+        
+        UpdateAmmoCounterLabel();
     }
 
     private void OnDestroy()
@@ -102,8 +104,7 @@ public class WeaponSystem : MonoBehaviour
         
         yield return new WaitForSeconds(reloadTime);
         
-        int ammoNeeded = maxAmmo -  currentAmmo;
-        
+        int ammoNeeded = maxAmmo - currentAmmo;
         int ammoToReload = Mathf.Min(ammoNeeded, totalAmmo);
         
         currentAmmo += ammoToReload;

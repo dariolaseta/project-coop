@@ -45,17 +45,23 @@ public class HealthSystem : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(int damage)
     {
+        currentHealth.Value = Mathf.Max(0, currentHealth.Value - damage);
+        
         if (currentHealth.Value <= 0)
         {
             Die();
         }
-        
-        currentHealth.Value = Mathf.Max(0, currentHealth.Value - damage);
     }
 
     private void Die()
     {
-        PlayerMovement playerMovement = GetComponent<PlayerMovement>();
+        DieClientRpc();
+    }
+
+    [ClientRpc]
+    private void DieClientRpc()
+    {
+        PlayerMovement playerMovement = GetComponentInParent<PlayerMovement>();
         playerMovement.enabled = false;
     }
 }

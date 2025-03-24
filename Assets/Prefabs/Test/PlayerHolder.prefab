@@ -7296,7 +7296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  reloadAction: {fileID: -354196544422000311, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  reloadAction: {fileID: 3691765767183143272, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   shootingPointTransform: {fileID: 7954880855549612532}
   weapon: {fileID: 11400000, guid: c31b6be6a013d6f47b0b6a4441e2f5ba, type: 2}
   ammoCounter: {fileID: 8238504355750863423}

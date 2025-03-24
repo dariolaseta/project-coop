@@ -825,6 +825,18 @@ PrefabInstance:
       propertyPath: audioSettings
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3084951258163827549, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084951258163827549, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+      propertyPath: ammoCounter
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084951258163827549, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+      propertyPath: shootingPointTransform
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3136538483273536089, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -930,6 +942,8 @@ PrefabInstance:
     - {fileID: 7045330914830059466, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
     - {fileID: 9069751188434511782, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
     - {fileID: 4313668677508989955, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+    - {fileID: 3084951258163827549, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+    - {fileID: 5164852484130068971, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
     m_RemovedGameObjects:
     - {fileID: 4643703937037031090, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
     - {fileID: 2982601689944496414, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
