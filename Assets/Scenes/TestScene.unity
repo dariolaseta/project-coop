@@ -1427,8 +1427,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingScreen: {fileID: 1840903436}
   disconnectUI: {fileID: 1159193841}
+  warningUI: {fileID: 0}
   returnToMainMenuButton: {fileID: 279129455}
   readyButton: {fileID: 0}
+  warningContinueButton: {fileID: 0}
+  warningCancelButton: {fileID: 0}
+  warningText: {fileID: 0}
 --- !u!1 &1238261681
 GameObject:
   m_ObjectHideFlags: 0

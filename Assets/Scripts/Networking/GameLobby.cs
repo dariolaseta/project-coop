@@ -65,7 +65,7 @@ public class GameLobby : MonoBehaviour
             await UnityServices.InitializeAsync(initializationOptions);
 
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
+            
             await VivoxService.Instance.InitializeAsync();
         }
     }
