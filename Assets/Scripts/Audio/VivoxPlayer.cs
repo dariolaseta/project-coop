@@ -24,9 +24,12 @@ public class VivoxPlayer : NetworkBehaviour
     
     private Dictionary<string, VivoxParticipant> participants = new Dictionary<string, VivoxParticipant>();
 
-    private void Awake()
+    private void OnParticipantRemoved(VivoxParticipant participant)
     {
-        VivoxService.Instance.ParticipantAddedToChannel += OnParticipantAddedToChannel;
+        if (participants.ContainsKey(participant.DisplayName))
+        {
+            participants.Remove(participant.DisplayName);
+        }
     }
 
     private void OnParticipantAddedToChannel(VivoxParticipant participant)
@@ -49,6 +52,9 @@ public class VivoxPlayer : NetworkBehaviour
         if (IsLocalPlayer)
         {
             LoginToVivoxAsync();
+            
+            VivoxService.Instance.ParticipantAddedToChannel += OnParticipantAddedToChannel;
+            VivoxService.Instance.ParticipantRemovedFromChannel += OnParticipantRemoved;
             
             VivoxService.Instance.LoggedIn += OnUserLoggedIn;
             VivoxService.Instance.LoggedOut += OnUserLoggedOut;
@@ -80,6 +86,9 @@ public class VivoxPlayer : NetworkBehaviour
     // TODO: LOG OUT QUANDO SI TORNA AL MENU PRINCIPALE
     private void OnDestroy()
     {
+        VivoxService.Instance.ParticipantAddedToChannel -= OnParticipantAddedToChannel;
+        VivoxService.Instance.ParticipantRemovedFromChannel -= OnParticipantRemoved;
+        
         if (IsLocalPlayer)
         {
             VivoxService.Instance.LoggedIn -= OnUserLoggedIn;
