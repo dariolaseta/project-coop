@@ -183,30 +183,25 @@ public class PlayerMovement : NetworkBehaviour
     private void MoveCharacter()
     {
 
-        if (!IsOwner && !playerLogic.CanMove()) return;
+        if (!IsOwner || !playerLogic.CanMove()) return;
 
-        // Determina la velocit� di movimento e la direzione
         Vector3 desiredMoveDirection = transform.TransformDirection(new Vector3(moveDirection.x, 0, moveDirection.z));
         float currentSpeed = isCrouching ? crouchSpeed : (isRunning ? runSpeed : walkSpeed);
         desiredMoveDirection *= currentSpeed;
 
-        // Gestisce la gravit�
         if (!characterController.isGrounded) {
             moveDirection.y -= Gravity * Time.deltaTime;
         } else {
             moveDirection.y = 0;
         }
 
-        // Applica il movimento
         characterController.Move((desiredMoveDirection + Vector3.up * moveDirection.y) * Time.deltaTime);
 
-        // Rotazione della telecamera
         rotationX += -lookInput.y * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, lookInput.x * lookSpeed, 0);
 
-        // Gestione dell'animazione
         isMoving = moveDirection.sqrMagnitude > 0.01f;
         
         anim.SetBool("isMoving", isMoving);

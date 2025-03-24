@@ -1030,6 +1030,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShowDiagnosticTools",
+                    "type": "Button",
+                    "id": "b90c0246-bc93-490a-b524-06115667f246",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1065,6 +1074,17 @@
                     "action": "ShowDebugMenu",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "5c88bc0f-595b-4ad8-b8b3-4f8c90114410",
+                    "path": "<Keyboard>/f12",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShowDiagnosticTools",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

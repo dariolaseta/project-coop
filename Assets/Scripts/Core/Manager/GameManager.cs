@@ -33,6 +33,21 @@ public class GameManager : NetworkBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        currentGameState.OnValueChanged += OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState previousValue, GameState newState)
+    {
+        switch (newState)
+        {
+            case GameState.Playing:
+                UIManager.Instance.HideLoadingScreen();
+                break;
+        }
+    }
+
     public void PlayerReady()
     {
         playersReady.Value++;
@@ -56,10 +71,18 @@ public class GameManager : NetworkBehaviour
     private void NotifyAllPlayersReadyClientRpc()
     {
         Debug.Log("GameManager: All players are ready, starting the game!");
-        
-        currentGameState.Value = GameState.Playing;
 
-        UIManager.Instance.HideLoadingScreen();
+        ChangeGameState(GameState.Playing);
+    }
+
+    private void ChangeGameState(GameState newState)
+    {
+        if (!IsServer) return;
+        
+        Debug.Log($"GameManager: Changing game state from {currentGameState.Value} to {newState}");
+        
+        GameState previousState = currentGameState.Value;
+        currentGameState.Value = newState;
     }
 
     public override void OnNetworkSpawn()
