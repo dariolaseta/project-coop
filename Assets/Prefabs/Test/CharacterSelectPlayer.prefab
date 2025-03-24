@@ -865,6 +865,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4118783077223248570, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 4118783077223248570, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4252828380587157459, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 645330048
@@ -896,6 +904,10 @@ PrefabInstance:
     - target: {fileID: 7045330914830059466, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
       propertyPath: pauseMenu
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8392827610388892817, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9069751188434511782, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
       propertyPath: bigCursor

@@ -83,7 +83,7 @@ public class VivoxPlayer : NetworkBehaviour
             lastPlayerHeadPos = localPlayerHead.position;
         }
     }
-    // TODO: LOG OUT QUANDO SI TORNA AL MENU PRINCIPALE
+    
     private void OnDestroy()
     {
         VivoxService.Instance.ParticipantAddedToChannel -= OnParticipantAddedToChannel;
