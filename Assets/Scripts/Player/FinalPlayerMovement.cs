@@ -39,7 +39,6 @@ public class FinalPlayerMovement : NetworkBehaviour
     
     private float rotationX = 0f;
     
-    private bool isGrounded = false;
     private bool isSprinting = false;
 
     private GameObject items;
@@ -110,6 +109,26 @@ public class FinalPlayerMovement : NetworkBehaviour
         MoveCharacter();
     }
 
+    private void OnCollisionStay(Collision collision)
+    {
+        if (!IsOwner || playerLogic.CanMove()) return;
+
+        if (!IsGrounded())
+        {
+            foreach (ContactPoint contact in collision.contacts)
+            {
+                float angle = Vector3.Angle(contact.normal, Vector3.up);
+
+                if (angle < 45f)
+                {
+                    rb.AddForce(contact.normal * 5f, ForceMode.Impulse);
+                    break;
+                }
+            }
+        }
+    }
+
+
     private void MoveCamera()
     {
         if (!IsOwner || !playerLogic.CanMove()) return;
@@ -161,10 +180,8 @@ public class FinalPlayerMovement : NetworkBehaviour
     private void OnJump(InputAction.CallbackContext obj)
     {
         if (!IsOwner || !playerLogic.CanMove()) return;
-        
-        isGrounded = Physics.Raycast(groundCheck.position, Vector3.down, out _, rayDistance, groundLayer);
-        
-        if (isGrounded)
+
+        if (IsGrounded())
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
@@ -196,5 +213,19 @@ public class FinalPlayerMovement : NetworkBehaviour
         if (!IsOwner) return;
         
         isSprinting = false;
+    }
+
+    private bool IsGrounded()
+    {
+        RaycastHit hit;
+        
+        if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, rayDistance, groundLayer))
+        {
+            float angle = Vector3.Angle(hit.normal, Vector3.up);
+
+            return angle < 30f;
+        }
+        
+        return false;
     }
 }
