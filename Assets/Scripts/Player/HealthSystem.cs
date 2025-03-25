@@ -27,16 +27,6 @@ public class HealthSystem : NetworkBehaviour
         currentHealth.OnValueChanged -= OnHealthChanged;
     }
 
-    private void Update()
-    {
-        if (!IsOwner) return;
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamageServerRpc(10);
-        }
-    }
-
     private void OnHealthChanged(int previousValue, int newValue)
     {
         healthSystemUI.UpdateHealthSlider(newValue);

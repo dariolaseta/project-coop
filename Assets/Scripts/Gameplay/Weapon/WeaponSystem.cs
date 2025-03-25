@@ -33,6 +33,8 @@ public class WeaponSystem : MonoBehaviour
 
     private void Awake()
     {
+        playerLogic = GetComponent<PlayerLogic>();
+        
         fireAction.action.Enable();
         fireAction.action.performed += Shoot;
         reloadAction.action.Enable();
