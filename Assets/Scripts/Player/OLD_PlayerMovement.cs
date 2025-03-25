@@ -4,20 +4,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : NetworkBehaviour
+public class OLD_PlayerMovement : NetworkBehaviour
 {
     [SerializeField] private float walkSpeed = 6f;
     [SerializeField] private float runSpeed = 12f;
     [SerializeField] private float lookSpeed = 2f;
     [SerializeField] private float lookXLimit = 45f;
     [SerializeField] private float defaultHeight = 2f;
-    [SerializeField] private float crouchHeight = 1f;
-    [SerializeField] private float crouchSpeed = 3f;
 
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference lookAction;
     [SerializeField] private InputActionReference runAction;
-    [SerializeField] private InputActionReference crouchAction;
     
     [SerializeField] private AudioClip footstepSound;
     
@@ -145,8 +142,6 @@ public class PlayerMovement : NetworkBehaviour
 
         runAction.action.performed += ctx => isRunning = true;
         runAction.action.canceled += ctx => isRunning = false;
-
-        crouchAction.action.performed += ctx => ToggleCrouch();
     }
 
     private void EnableInputActions() 
@@ -154,7 +149,6 @@ public class PlayerMovement : NetworkBehaviour
         moveAction.action.Enable();
         lookAction.action.Enable();
         runAction.action.Enable();
-        crouchAction.action.Enable();
     }
 
     private void DisableInputActions() 
@@ -163,21 +157,10 @@ public class PlayerMovement : NetworkBehaviour
         moveAction.action.Disable();
         lookAction.action.Disable();
         runAction.action.Disable();
-        crouchAction.action.Disable();
 
         moveAction.action.started -= ctx => moveDirection = Vector3.zero;
         lookAction.action.started -= ctx => lookInput = Vector2.zero;
         runAction.action.started -= ctx => isRunning = false;
-        crouchAction.action.started -= ctx => isCrouching = false;
-    }
-
-    private void ToggleCrouch() 
-    {
-
-        isCrouching = !isCrouching;
-        characterController.height = isCrouching ? crouchHeight : defaultHeight;
-        walkSpeed = isCrouching ? crouchSpeed : startWalkingSpeed;
-        runSpeed = isCrouching ? crouchSpeed : startRunningSpeed;
     }
 
     private void MoveCharacter()
@@ -186,7 +169,7 @@ public class PlayerMovement : NetworkBehaviour
         if (!IsOwner || !playerLogic.CanMove()) return;
 
         Vector3 desiredMoveDirection = transform.TransformDirection(new Vector3(moveDirection.x, 0, moveDirection.z));
-        float currentSpeed = isCrouching ? crouchSpeed : (isRunning ? runSpeed : walkSpeed);
+        float currentSpeed = isRunning ? runSpeed : walkSpeed;
         desiredMoveDirection *= currentSpeed;
 
         if (!characterController.isGrounded) {

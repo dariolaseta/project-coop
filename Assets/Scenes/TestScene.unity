@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 43947479}
   - component: {fileID: 43947478}
   - component: {fileID: 43947477}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1077,7 +1077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  playerPrefab: {fileID: 3136538483273536089, guid: 15beeec265acc7046bd79138e1c464f8, type: 3}
+  playerPrefab: {fileID: 5588340551150525575, guid: 79ea911cd02d7594bae4d901be220763, type: 3}
 --- !u!114 &712087359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,7 +1113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   timerText: {fileID: 799972508}
-  startTime: 10
+  startTime: 3600
 --- !u!43 &731087216
 Mesh:
   m_ObjectHideFlags: 0

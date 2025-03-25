@@ -51,7 +51,7 @@ public class HealthSystem : NetworkBehaviour
     [ClientRpc]
     private void DieClientRpc()
     {
-        PlayerMovement playerMovement = GetComponentInParent<PlayerMovement>();
+        FinalPlayerMovement playerMovement = GetComponentInParent<FinalPlayerMovement>();
         playerMovement.enabled = false;
     }
 }
