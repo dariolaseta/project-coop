@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : NetworkBehaviour
 {
@@ -11,6 +12,8 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Transform playerPrefab;
     
     private NetworkVariable<int> playersReady = new NetworkVariable<int>();
+
+    private Timer timer;
 
     public enum GameState
     {
@@ -31,6 +34,8 @@ public class GameManager : NetworkBehaviour
         }
         
         Instance = this;
+        
+        timer = GetComponent<Timer>();
     }
 
     private void Start()
@@ -44,6 +49,7 @@ public class GameManager : NetworkBehaviour
         {
             case GameState.Playing:
                 UIManager.Instance.HideLoadingScreen();
+                timer.StartTimer();
                 break;
         }
     }
@@ -100,5 +106,18 @@ public class GameManager : NetworkBehaviour
             Transform playerTransform = Instantiate(playerPrefab);
             playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
         }
+    }
+
+    public void GameOver()
+    {
+        GameOverClientRpc();
+    }
+
+    [ClientRpc]
+    private void GameOverClientRpc()
+    {
+        ChangeGameState(GameState.GameOver);
+
+        UIManager.Instance.ShowGameOverScreen();
     }
 }

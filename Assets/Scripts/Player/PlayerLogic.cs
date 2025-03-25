@@ -56,6 +56,9 @@ public class PlayerLogic : NetworkBehaviour
     {
         if (!CanMove()) return;
         
+        if (GameManager.Instance.CurrentGameState.Value == GameManager.GameState.GameOver)
+            pauseMenu.SetActive(false);
+        
         switch (playerState)
         {
             case PlayerState.Freeroam:

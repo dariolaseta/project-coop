@@ -14,11 +14,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject disconnectUI;
     [SerializeField] private GameObject warningUI;
+    [SerializeField] private GameObject gameOverUI;
     
     [SerializeField] private Button returnToMainMenuButton;
     [SerializeField] private Button readyButton;
     [SerializeField] private Button warningContinueButton;
     [SerializeField] private Button warningCancelButton;
+    [SerializeField] private Button restartButton;
+    [SerializeField] private Button returnToMainMenuGameOverButton;
     
     [SerializeField] private TMP_Text warningText;
 
@@ -37,8 +40,14 @@ public class UIManager : MonoBehaviour
         
         returnToMainMenuButton.onClick.AddListener(ReturnToMainMenu);
         
+        if (returnToMainMenuGameOverButton)
+            returnToMainMenuGameOverButton.onClick.AddListener(ReturnToMainMenu);
+        
         if (warningCancelButton)
             warningCancelButton.onClick.AddListener(CancelButtonClick);
+        
+        if (gameOverUI)
+            gameOverUI.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -106,5 +115,20 @@ public class UIManager : MonoBehaviour
         warningText.text = message;
         
         warningContinueButton.onClick.AddListener(continueAction);
+    }
+
+    public void ShowGameOverScreen()
+    {
+        ShowCursor();
+        
+        gameOverUI.SetActive(true);
+        
+        restartButton.gameObject.SetActive(NetworkManager.Singleton.IsHost);
+    }
+
+    public void ShowCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
