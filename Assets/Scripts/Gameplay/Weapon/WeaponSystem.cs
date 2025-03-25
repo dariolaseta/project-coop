@@ -17,6 +17,8 @@ public class WeaponSystem : MonoBehaviour
     
     [SerializeField] private TMP_Text ammoCounter;
     
+    [SerializeField] private Animator animator;
+    
     private float fireRange = 0f;
     private float fireRate = 0f;
     private float nextTimeToFire = 0f;
@@ -26,6 +28,11 @@ public class WeaponSystem : MonoBehaviour
     private int magazineSize = 0;
     private int totalAmmo = 30;
     private int maxAmmo = 0;
+
+    private AudioClip shootSound;
+    
+    private ParticleSystem muzzleFlash;
+    private ParticleSystem impactParticles;
     
     private bool isReloading = false;
     
@@ -46,6 +53,11 @@ public class WeaponSystem : MonoBehaviour
         magazineSize = weapon.MagazineSize;
         fireRange = weapon.Range;
         reloadTime = weapon.ReloadTime;
+
+        shootSound = weapon.ShootSound;
+        
+        muzzleFlash = weapon.MuzzleFlash;
+        impactParticles = weapon.BulletImpactEffect;
         
         UpdateAmmoCounterLabel();
     }
@@ -64,14 +76,13 @@ public class WeaponSystem : MonoBehaviour
         
         Ray r = new Ray(shootingPointTransform.position, shootingPointTransform.forward);
         
-        // Muzzleflash
+        animator.SetTrigger("Fire");
 
         currentAmmo--;
         
         UpdateAmmoCounterLabel();
-        // Shooting sound
         
-        Debug.Log("SHOOT");
+        AudioManager.Instance.PlaySpatialSfx(shootingPointTransform.position, shootSound.name);
         
         nextTimeToFire = Time.time + 1f / fireRate;
 
@@ -83,12 +94,10 @@ public class WeaponSystem : MonoBehaviour
 
     private void HandleImpact(RaycastHit hit)
     {
-        // Impact particle
+        Instantiate(impactParticles, hit.point, Quaternion.LookRotation(hit.normal));
         
         HealthSystem targetHealth = hit.collider.GetComponent<HealthSystem>();
         targetHealth?.TakeDamageServerRpc(weapon.Damage);
-        
-        Debug.Log($"Shoot {hit.transform.name} Current ammo: {currentAmmo}");
     }
 
     private void Reload(InputAction.CallbackContext obj)
@@ -100,8 +109,7 @@ public class WeaponSystem : MonoBehaviour
     {
         if (!CanReload()) yield break;
         
-        Debug.Log("Reloading...");
-        
+        animator.SetTrigger("Reload");
         // Audio
         
         isReloading = true;
@@ -119,7 +127,6 @@ public class WeaponSystem : MonoBehaviour
         isReloading = false;
     }
     
-    // TODO: Aggiungere networkstates check
     private bool CanShoot()
     {
         return currentAmmo > 0 &&

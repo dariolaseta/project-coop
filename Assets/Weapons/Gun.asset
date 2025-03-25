@@ -22,7 +22,7 @@ MonoBehaviour:
   range: 15
   fireRate: 10
   reloadTime: 3
-  shootSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: b22938a6ffeb4e04bb4ed45b0d1a7e2c, type: 3}
   reloadSound: {fileID: 0}
-  muzzleFlash: {fileID: 0}
-  bulletImpactEffect: {fileID: 0}
+  muzzleFlash: {fileID: 19800000, guid: 8eaaa4f553116f44b8459bc24201c514, type: 3}
+  bulletImpactEffect: {fileID: 19800002, guid: 00fedc70b62a31e448e8ccc298257b56, type: 3}
