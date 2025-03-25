@@ -28,6 +28,8 @@ public class WeaponSystem : MonoBehaviour
     private int maxAmmo = 0;
     
     private bool isReloading = false;
+    
+    private PlayerLogic playerLogic;
 
     private void Awake()
     {
@@ -120,14 +122,18 @@ public class WeaponSystem : MonoBehaviour
     {
         return currentAmmo > 0 &&
                Time.time >= nextTimeToFire &&
-               !isReloading;
+               !isReloading &&
+               GameManager.Instance.CurrentGameState.Value == GameManager.GameState.Playing &&
+               playerLogic.PlayerState == PlayerState.Freeroam;
     }
     
     private bool CanReload() {
         
         return totalAmmo > 0 && 
                !isReloading && 
-               currentAmmo < maxAmmo;
+               currentAmmo < maxAmmo &&
+               GameManager.Instance.CurrentGameState.Value == GameManager.GameState.Playing &&
+               playerLogic.PlayerState == PlayerState.Freeroam;
     }
     
     private void UpdateAmmoCounterLabel() {
